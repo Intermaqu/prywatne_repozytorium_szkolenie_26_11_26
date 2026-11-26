@@ -22,6 +22,9 @@ pipeline {
 
                 script {
                     sh '''
+                        echo $CITY
+                        echo $params.CITY
+                        echo $WEATHER_API_KEY
                         chmod +x ./start.sh
                         ./start.sh $CITY $WEATHER_API_KEY}
                     '''

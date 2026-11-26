@@ -20,7 +20,7 @@ pipeline {
                   ]]
                 )
 
-                withCredentials([string(credentialsId: 'WEATHER_API_KEY', variable: 'WEATHER_API_KEY')]) {
+                script {
                     sh '''
                         bash ./start.sh "${params.CITY}" "${WEATHER_API_KEY}"
                     '''

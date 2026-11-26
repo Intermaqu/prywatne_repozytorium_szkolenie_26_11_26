@@ -20,13 +20,10 @@ pipeline {
                   ]]
                 )
 
-                script {
+                withCredentials([string(credentialsId: 'WEATHER_API_KEY', variable: 'WEATHER_API_KEY')]) {
                     sh '''
-                        echo $CITY
-                        echo $params.CITY
-                        echo $WEATHER_API_KEY
                         chmod +x ./start.sh
-                        ./start.sh $CITY $WEATHER_API_KEY}
+                        ./start.sh $CITY $WEATHER_API_KEY
                     '''
                 }
             }

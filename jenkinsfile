@@ -1,0 +1,37 @@
+pipeline {
+    // Budowanie na dowlnym agencie
+    agent any
+    // Stages
+
+    parameters {
+      string defaultValue: 'Pattaya', name: 'CITY', trim: true
+    }
+
+    stages {
+        stage('Pogoda') {
+            steps {
+
+                checkout scmGit(
+                  branches: [[name: '*/main']], 
+                  extensions: [], 
+                  userRemoteConfigs: [[
+                    credentialsId: 'klucz-github-priv', 
+                    url: 'https://github.com/Intermaqu/prywatne_repozytorium_szkolenie_26_11_26'
+                  ]]
+                )
+
+                withCredentials([string(credentialsId: 'WEATHER_API_KEY', variable: 'WEATHER_API_KEY')]) {
+                    sh '''
+                        bash ./start.sh "${params.CITY}" "${WEATHER_API_KEY}"
+                    '''
+                }
+            }
+        }
+    }
+    post {
+      always {
+        cleanWs()
+      }
+    }
+}
+
